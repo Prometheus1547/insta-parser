@@ -20,6 +20,7 @@ PASSWORD = 'Stratocaster1547'
 
 driver = webdriver.Chrome(PATH)
 
+
 def accept_cookies():
     btn = WebDriverWait(driver, 10).until(presence_of_element_located((By.XPATH, "//button")))
     btn.click()
@@ -78,8 +79,9 @@ def get_active(text):
 
 def get_messages(msg_id):
     print("Started to find messages for id: " + str(msg_id))
-    dialogue_pre = driver.find_element_by_xpath("//*[contains(@href,'{id_dil}')]".format(id_dil=str(msg_id)))
-    print("Open dialogue")
+    dialogue_pre = driver.find_element_by_xpath("//*[contains(@href'{id_dil}')]".format(id_dil=str(msg_id)))
+    name = dialogue_pre.get_attribute("innerText").split('\n', 1)[0]
+    print("Open dialogue: " + name)
     dialogue_pre.click()
     sleep(1)
     base_div = '                     Igw0E  Xf6Yq         eGOV_     ybXk5    _4EzTm                                                                                                              '
@@ -89,13 +91,19 @@ def get_messages(msg_id):
     message_elements = driver.find_elements_by_xpath(f"//div[@class='{base_div}']")
     messages = []
     for msg in message_elements:
-        if msg.find_elements(By.XPATH, f"//div[@class='{my_div}']//div[@class='{inner_div}' and contains(span, '{msg.text}')]"):
+        if msg.find_elements(By.XPATH,
+                             f"//div[@class='{my_div}']//div[@class='{inner_div}' and contains(span, '{msg.text}')]"):
             messages.append({"me": msg.text})
         else:
-            if msg.find_elements(By.XPATH, f"//div[@class='{them_div}']//div[@class='{inner_div}' and contains(span, '{msg.text}')]"):
+            if msg.find_elements(By.XPATH,
+                                 f"//div[@class='{them_div}']//div[@class='{inner_div}' and contains(span, '{msg.text}')]"):
                 messages.append({"them": msg.text})
     print(messages)
-    json_util.save_file(messages, "katy.json")
+    msg_obj = {"id": msg_id,
+               "dialogue_name": name,
+               "messages": messages
+               }
+    json_util.save_file(msg_obj, f"{name}-dm.json")
     sleep(5)
 
 
