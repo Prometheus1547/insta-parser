@@ -79,7 +79,7 @@ def get_active(text):
 
 def get_messages(msg_id):
     print("Started to find messages for id: " + str(msg_id))
-    dialogue_pre = driver.find_element_by_xpath("//*[contains(@href'{id_dil}')]".format(id_dil=str(msg_id)))
+    dialogue_pre = driver.find_element_by_xpath("//*[contains(@href, '{id_dil}')]".format(id_dil=str(msg_id)))
     name = dialogue_pre.get_attribute("innerText").split('\n', 1)[0]
     print("Open dialogue: " + name)
     dialogue_pre.click()
@@ -104,7 +104,7 @@ def get_messages(msg_id):
                "messages": messages
                }
     json_util.save_file(msg_obj, f"{name}-dm.json")
-    sleep(5)
+    return msg_obj
 
 
 def launch_request():
