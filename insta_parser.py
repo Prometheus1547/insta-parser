@@ -106,6 +106,16 @@ def get_messages(msg_id):
     json_util.save_file(msg_obj, f"{name}-dm.json")
     return msg_obj
 
+def send_msg(text, msg_id):
+    dialogue_pre = driver.find_element_by_xpath("//*[contains(@href, '{id_dil}')]".format(id_dil=str(msg_id)))
+    name = dialogue_pre.get_attribute("innerText").split('\n', 1)[0]
+    print("Open dialogue: " + name)
+    dialogue_pre.click()
+    text_area = driver.find_element_by_tag_name("textarea")
+    text_area.send_keys(text)
+    text_area.send_keys(Keys.ENTER)
+    print(f"Send message: '{text_area}' to user {name}")
+
 
 def launch_request():
     print("Started launch request at " + now())

@@ -1,5 +1,5 @@
-from insta_parser import launch_request, get_dm, get_messages
+from insta_parser import launch_request, get_dm, get_messages, send_msg
 
 launch_request()
 get_dm()
-get_messages(340282366841710300949128247948053508039)
+send_msg("hi", 340282366841710300949128135204391503626)
