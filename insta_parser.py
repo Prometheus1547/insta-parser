@@ -76,6 +76,29 @@ def get_active(text):
         return "none"
 
 
+def get_messages(msg_id):
+    print("Started to find messages for id: " + str(msg_id))
+    dialogue_pre = driver.find_element_by_xpath("//*[contains(@href,'{id_dil}')]".format(id_dil=str(msg_id)))
+    print("Open dialogue")
+    dialogue_pre.click()
+    sleep(1)
+    base_div = '                     Igw0E  Xf6Yq         eGOV_     ybXk5    _4EzTm                                                                                                              '
+    inner_div = '_7UhW9   xLCgt      MMzan  KV-D4             p1tLr      hjZTB'
+    my_div = 'VdURK e9_tN JRTzd'
+    them_div = ' e9_tN JRTzd'
+    message_elements = driver.find_elements_by_xpath(f"//div[@class='{base_div}']")
+    messages = []
+    for msg in message_elements:
+        if msg.find_elements(By.XPATH, f"//div[@class='{my_div}']//div[@class='{inner_div}' and contains(span, '{msg.text}')]"):
+            messages.append({"me": msg.text})
+        else:
+            if msg.find_elements(By.XPATH, f"//div[@class='{them_div}']//div[@class='{inner_div}' and contains(span, '{msg.text}')]"):
+                messages.append({"them": msg.text})
+    print(messages)
+    json_util.save_file(messages, "katy.json")
+    sleep(5)
+
+
 def launch_request():
     print("Started launch request at " + now())
     driver.get(URL)
