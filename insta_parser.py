@@ -114,7 +114,7 @@ def send_msg(text, msg_id):
     text_area = driver.find_element_by_tag_name("textarea")
     text_area.send_keys(text)
     text_area.send_keys(Keys.ENTER)
-    print(f"Send message: '{text_area}' to user {name}")
+    print(f"Send message: '{text}' to user {name}")
 
 
 def launch_request():
